@@ -7,7 +7,8 @@ from mtcnn.mtcnn import MTCNN
 detector = MTCNN()
 
 image = cv2.imread("ivan.jpg")
-result = detector.detect_faces(image)
+image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # rgb better
+result = detector.detect_faces(image_rgb)
 
 # Result is an array with all the bounding boxes detected. We know that for 'ivan.jpg' there is only one.
 bounding_box = result[0]['box']
