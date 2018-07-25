@@ -30,7 +30,7 @@ __author__ = "Iván de Paz Centeno"
 
 class Network(object):
 
-    def __init__(self, session, trainable: bool=True):
+    def __init__(self, session, trainable=True):
         """
         Initializes the network.
         :param trainable: flag to determine if this network should be trainable or not.
@@ -50,7 +50,7 @@ class Network(object):
         """
         raise NotImplementedError("This method must be implemented by the network.")
 
-    def add_layer(self, name: str, layer_output):
+    def add_layer(self, name, layer_output):
         """
         Adds a layer to the network.
         :param name: name of the layer to add
@@ -59,7 +59,7 @@ class Network(object):
         self.__layers[name] = layer_output
         self.__last_layer_name = name
 
-    def get_layer(self, name: str=None):
+    def get_layer(self, name=None):
         """
         Retrieves the layer by its name.
         :param name: name of the layer to retrieve. If name is None, it will retrieve the last added layer to the
@@ -77,7 +77,7 @@ class Network(object):
         """
         return self.__trainable
 
-    def set_weights(self, weights_values: dict, ignore_missing=False):
+    def set_weights(self, weights_values, ignore_missing=False):
         """
         Sets the weights values of the network.
         :param weights_values: dictionary with weights for each layer

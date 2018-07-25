@@ -36,9 +36,9 @@ import cv2
 import numpy as np
 import pkg_resources
 import tensorflow as tf
-from mtcnn.layer_factory import LayerFactory
-from mtcnn.network import Network
-from mtcnn.exceptions import InvalidImage
+from layer_factory import LayerFactory
+from network import Network
+from exceptions import InvalidImage
 
 __author__ = "Iván de Paz Centeno"
 
@@ -144,7 +144,7 @@ class StageStatus(object):
     """
     Keeps status between MTCNN stages
     """
-    def __init__(self, pad_result: tuple=None, width=0, height=0):
+    def __init__(self, pad_result=None, width=0, height=0):
         self.width = width
         self.height = height
         self.dy = self.edy = self.dx = self.edx = self.y = self.ey = self.x = self.ex = self.tmpw = self.tmph = []
@@ -152,7 +152,7 @@ class StageStatus(object):
         if pad_result is not None:
             self.update(pad_result)
 
-    def update(self, pad_result: tuple):
+    def update(self, pad_result):
         s = self
         s.dy, s.edy, s.dx, s.edx, s.y, s.ey, s.x, s.ex, s.tmpw, s.tmph = pad_result
 
@@ -164,8 +164,8 @@ class MTCNN(object):
         b) Detection of keypoints (left eye, right eye, nose, mouth_left, mouth_right)
     """
 
-    def __init__(self, weights_file: str=None, min_face_size: int=20, steps_threshold: list=None,
-                 scale_factor: float=0.709):
+    def __init__(self, weights_file=None, min_face_size=20, steps_threshold=None,
+                 scale_factor=0.709):
         """
         Initializes the MTCNN.
         :param weights_file: file uri with the weights of the P, R and O networks from MTCNN. By default it will load
@@ -214,7 +214,7 @@ class MTCNN(object):
         return scales
 
     @staticmethod
-    def __scale_image(image, scale: float):
+    def __scale_image(image, scale):
         """
         Scales the image to a given scale.
         :param image:
@@ -380,7 +380,7 @@ class MTCNN(object):
         boundingbox[:, 0:4] = np.transpose(np.vstack([b1, b2, b3, b4]))
         return boundingbox
 
-    def detect_faces(self, img) -> list:
+    def detect_faces(self, img):
         """
         Detects bounding boxes from the specified image.
         :param img: image to process
@@ -392,7 +392,7 @@ class MTCNN(object):
         height, width, _ = img.shape
         stage_status = StageStatus(width=width, height=height)
 
-        m = 12 / self.__min_face_size
+        m = 12. / self.__min_face_size
         min_layer = np.amin([height, width]) * m
 
         scales = self.__compute_scale_pyramid(m, min_layer)
@@ -426,7 +426,7 @@ class MTCNN(object):
 
         return bounding_boxes
 
-    def __stage1(self, image, scales: list, stage_status: StageStatus):
+    def __stage1(self, image, scales, stage_status):
         """
         First stage of the MTCNN.
         :param image:
@@ -480,7 +480,7 @@ class MTCNN(object):
 
         return total_boxes, status
 
-    def __stage2(self, img, total_boxes, stage_status:StageStatus):
+    def __stage2(self, img, total_boxes, stage_status):
         """
         Second stage of the MTCNN.
         :param img:
@@ -533,7 +533,7 @@ class MTCNN(object):
 
         return total_boxes, stage_status
 
-    def __stage3(self, img, total_boxes, stage_status: StageStatus):
+    def __stage3(self, img, total_boxes, stage_status):
         """
         Third stage of the MTCNN.
 

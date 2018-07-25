@@ -44,7 +44,7 @@ class LayerFactory(object):
             raise Exception("Padding {} not valid".format(padding))
 
     @staticmethod
-    def __validate_grouping(channels_input: int, channels_output: int, group: int):
+    def __validate_grouping(channels_input, channels_output, group):
         if channels_input % group != 0:
             raise Exception("The number of channels in the input does not match the group")
 
@@ -68,7 +68,7 @@ class LayerFactory(object):
 
         return vectorized_input, dim
 
-    def __make_var(self, name: str, shape: list):
+    def __make_var(self, name, shape):
         """
         Creates a tensorflow variable with the given name and shape.
         :param name: name to set for the variable.
@@ -77,7 +77,7 @@ class LayerFactory(object):
         """
         return tf.get_variable(name, shape, trainable=self.__network.is_trainable())
 
-    def new_feed(self, name: str, layer_shape: tuple):
+    def new_feed(self, name, layer_shape):
         """
         Creates a feed layer. This is usually the first layer in the network.
         :param name: name of the layer
@@ -87,9 +87,9 @@ class LayerFactory(object):
         feed_data = tf.placeholder(tf.float32, layer_shape, 'input')
         self.__network.add_layer(name, layer_output=feed_data)
 
-    def new_conv(self, name: str, kernel_size: tuple, channels_output: int,
-                 stride_size: tuple, padding: str='SAME',
-                 group: int=1, biased: bool=True, relu: bool=True, input_layer_name: str=None):
+    def new_conv(self, name, kernel_size, channels_output,
+                 stride_size, padding='SAME',
+                 group=1, biased=True, relu=True, input_layer_name=None):
         """
         Creates a convolution layer for the network.
         :param name: name for the layer
@@ -136,7 +136,7 @@ class LayerFactory(object):
 
         self.__network.add_layer(name, layer_output=output)
 
-    def new_prelu(self, name: str, input_layer_name: str=None):
+    def new_prelu(self, name, input_layer_name=None):
         """
         Creates a new prelu layer with the given name and input.
         :param name: name for this layer.
@@ -151,8 +151,8 @@ class LayerFactory(object):
 
         self.__network.add_layer(name, layer_output=output)
 
-    def new_max_pool(self, name:str, kernel_size: tuple, stride_size: tuple, padding='SAME',
-                     input_layer_name: str=None):
+    def new_max_pool(self, name, kernel_size, stride_size, padding='SAME',
+                     input_layer_name=None):
         """
         Creates a new max pooling layer.
         :param name: name for the layer.
@@ -175,7 +175,7 @@ class LayerFactory(object):
 
         self.__network.add_layer(name, layer_output=output)
 
-    def new_fully_connected(self, name: str, output_count: int, relu=True, input_layer_name: str=None):
+    def new_fully_connected(self, name, output_count, relu=True, input_layer_name=None):
         """
         Creates a new fully connected layer.
 
@@ -198,7 +198,7 @@ class LayerFactory(object):
 
         self.__network.add_layer(name, layer_output=fc)
 
-    def new_softmax(self, name, axis, input_layer_name: str=None):
+    def new_softmax(self, name, axis, input_layer_name=None):
         """
         Creates a new softmax layer
         :param name: name to set for the layer
