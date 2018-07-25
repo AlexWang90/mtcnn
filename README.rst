@@ -16,13 +16,9 @@ MTCNN from David Sandberg (`FaceNet's MTCNN <https://github.com/davidsandberg/fa
 INSTALLATION
 ############
 
-Currently it is only supported Python3.4 onwards. It can be installed through pip:
+Currently it supports Python2.7 and Python3.4+.
 
-.. code:: bash
-
-    $ pip3 install mtcnn
-
-This implementation requires OpenCV>=3.2 and Tensorflow>=1.4.0 installed in the system, with bindings for Python3.
+This implementation requires OpenCV>=3.2 and Tensorflow>=1.4.0 installed in the system.
 
 They can be installed through pip (if pip version >= 9.0.1):
 
