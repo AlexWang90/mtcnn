@@ -9,7 +9,9 @@ import traceback
 
 import cv2
 from mtcnn import MTCNN
+
 mtcnn_detector = MTCNN(weights_file='/Users/alexwang/workspace/video/face/mtcnn/data/mtcnn_weights.npy')
+
 
 def face_detect(img, expand=True, max_boundary=480):
     """
@@ -55,6 +57,17 @@ def face_detect(img, expand=True, max_boundary=480):
             new_rect = (x_min, y_min, x_max, y_max)
 
             face_img = img[y_min:y_max, x_min: x_max, :].copy()
+
+            # change result with ratio
+            result['box'] = [int(x / ratio), int(y / ratio), int(w / ratio), int(h / ratio)]
+            key_points = result['keypoints']
+            new_keypoints = {}
+            for key, value in key_points.items():
+                value_x = int(value[0] / ratio)
+                value_y = int(value[1] / ratio)
+                new_keypoints[key] = (value_x, value_y)
+            result['keypoints'] = new_keypoints
+
             face_img_list.append((face_img, new_rect, score, result))
         except Exception as e:
             traceback.print_exc()
